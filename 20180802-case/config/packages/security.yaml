@@ -1,0 +1,55 @@
+security:
+    # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
+    encoders:
+        App\Entity\User:
+            algorithm: bcrypt
+    providers:
+        user_db:
+          entity:
+            class: App\Entity\User
+            property: apiKey
+        #in_memory: { memory: ~ }
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        api:
+            pattern: ^/api/
+            guard:
+                authenticators:
+                  - App\Security\AppUserWsse
+        main:
+            anonymous: ~
+
+            # activate different ways to authenticate
+
+            # http_basic: true
+            # https://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
+            provider: user_db
+            form_login:
+                csrf_token_generator: security.csrf.token_manager
+                username_parameter: _name
+                default_target_path: profile
+                failure_path: login
+            # https://symfony.com/doc/current/security/form_login_setup.html
+            logout:
+                target: /login
+                invalidate_session: true
+            guard:
+                authenticators:
+                  - App\Security\UserLoginNamePasswordForm
+                  # if we need shared entry point https://symfony.com/doc/master/security/multiple_guard_authenticators.html
+                  #- App\Security\FacebookConnectAuthenticator
+                #entry_point: App\Security\LoginFormAuthenticator
+
+
+    # Easy way to control access for large sections of your site
+    # Note: Only the *first* access control that matches will be used
+    access_control:
+        # - { path: ^/admin, roles: ROLE_ADMIN }
+        #- { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        #- { path: ^/registeruser, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        #- { path: ^/profile, roles: ROLE_USER }
+        #- { path: ^/api, roles: ROLE_USER }
+
+

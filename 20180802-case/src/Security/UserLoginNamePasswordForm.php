@@ -27,7 +27,7 @@ class UserLoginNamePasswordForm extends AbstractFormLoginAuthenticator
     public function supports(Request $request)
     {
         //disable doublecheck 4 reg form
-        dump('Login/register route support checker');
+        //dump('Login/register route support checker');
 //        According 2 https://symfony.com/doc/current/best_practices/security.html let me disable this feature for all other routes, unless login
         if ($request->attributes->get('_route') === 'register' && $request->isMethod('POST')) {
 
