@@ -2,48 +2,30 @@
 
 namespace App\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
+//use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Validator\Constraints as Assert;
+//use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+//use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
- * @UniqueEntity(fields="name", message="Username already taken")
- */
+
 class User implements UserInterface, \Serializable
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=15)
-     */
+
     private $name;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+
     private $password;
 
-    /**
-     * @Assert\NotBlank()
-     * @Assert\Length(max=15)
-     */
+
     private $rawPassword;
 
-    /**
-     * @ORM\Column(type="array", nullable=true)
-     */
+
     private $roles;
 
-    /**
-     * @ORM\Column(type="string", nullable=true, unique=true)
-     */
+
     private $apiKey;
 
     public function __construct()

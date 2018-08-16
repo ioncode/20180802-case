@@ -1,0 +1,23 @@
+App\Entity\User:
+  type: entity
+  table: user
+  id:
+    id:
+      type: integer
+      generator:
+        strategy: AUTO
+  fields:
+    name:
+      type: string
+      length: 40
+      nullable: false
+      unique: true
+    password:
+      type: string
+      length: 255
+      nullable: true
+    apiKey:
+      type: string
+      length: 255
+      column: api_key
+      nullable: true
