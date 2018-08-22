@@ -47,7 +47,7 @@ class UserController extends Controller
     public function profile(User $user, AuthorizationCheckerInterface $authChecker): Response
     {
         // https://symfony.com/doc/current/controller/argument_value_resolver.html
-        dump([$user, $authChecker, 'profile resolver ']);
+        //dump([$user, $authChecker, 'profile resolver ']);
         if (false === $authChecker->isGranted('ROLE_USER')) {
             throw new AccessDeniedException('Unable to access this page!');
         }

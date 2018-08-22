@@ -2,12 +2,19 @@ security:
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     encoders:
         App\Entity\User:
-            algorithm: bcrypt
+#            algorithm: bcrypt
+#          https://symfony.com/doc/current/reference/configuration/security.html#using-the-argon2i-password-encoder
+          algorithm: argon2i
+          memory_cost:          16384
+          time_cost:            2
+          threads:              4
+
+
     providers:
         user_db:
           entity:
             class: App\Entity\User
-            property: apiKey
+            property: name
         #in_memory: { memory: ~ }
     firewalls:
         dev:
@@ -18,7 +25,23 @@ security:
             guard:
                 authenticators:
                   - App\Security\AppUserWsse
+
+#        another:
+#            pattern: /section
+#            guard:
+#              authenticators:
+#              - App\Security\LoginFormAuthenticator
+#            # dev
+#            provider: user_db
+#            #user_checker: App\Security\UserChecker
+#
+#            context: simple_shared_context
+#            #try proceed only POST requests via adding methods, checked by full configuration | php bin/console debug:config security
+#            #https://symfony.com/doc/current/security/firewall_restriction.html
+#            methods: [GET, POST]
+
         main:
+#            context: simple_shared_context
             anonymous: ~
 
             # activate different ways to authenticate
@@ -47,9 +70,9 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         # - { path: ^/admin, roles: ROLE_ADMIN }
-        #- { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         #- { path: ^/registeruser, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        #- { path: ^/profile, roles: ROLE_USER }
-        #- { path: ^/api, roles: ROLE_USER }
+        - { path: ^/profile, roles: ROLE_USER }
+        - { path: ^/api, roles: ROLE_USER }
 
 

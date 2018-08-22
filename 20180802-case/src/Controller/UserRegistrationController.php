@@ -9,12 +9,28 @@ use App\Entity\User;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class UserRegistrationController extends Controller
 {
 
-    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder)
+    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, AuthorizationCheckerInterface $authChecker)
     {
+
+        // 0) check if user logged in (not anon.) & logout him. If need another scenario, please, look to my login's process  implementation
+
+        $user_logged_in=$authChecker->isGranted('ROLE_USER');
+        //dump(['method'=>__METHOD__, 'not anon.'=> $user_logged_in, 'request_session'=>$request->getSession()]);
+
+        if ($user_logged_in) {
+
+
+            $this->get('security.token_storage')->setToken(null);
+            $request->getSession()->invalidate();
+
+
+        }
+
         // 1) build the form
         $user = new User();
         $form = $this->createForm(UserRegistrationLoginPasswordType::class, $user);

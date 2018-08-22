@@ -10,8 +10,10 @@ profile:
   controller: App\Controller\UserController::profile
 
 login:
+  #delegate login to security controller https://symfony.com/doc/current/security/form_login_setup.html
   path: /login
-  controller: App\Controller\UserController::login
+  #controller: App\Controller\UserController::login
+  controller: App\Controller\SecurityController::login
 
 logout:
   path: /logout

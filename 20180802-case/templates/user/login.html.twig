@@ -11,11 +11,11 @@
     <div class="text-info">
         Debug here
         error: {{ dump(error) }}
-        lastusernamefromauthutils: {{ dump(name) }}
+        lastusernamefromauthutils: {{ dump(last_username) }}
     </div>
     <form action="{{ path('login') }}" method="post">
         <label for="name">name:</label>
-        <input type="text" id="name" name="_name" value="{{ name }}" />
+        <input type="text" id="name" name="_name" value="{{ last_username }}" />
 
         <label for="password">Password:</label>
         <input type="password" id="password" name="_password" />

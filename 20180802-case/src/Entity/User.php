@@ -2,10 +2,7 @@
 
 namespace App\Entity;
 
-//use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
-//use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-//use Symfony\Component\Validator\Constraints as Assert;
 
 
 class User implements UserInterface, \Serializable
@@ -74,22 +71,6 @@ class User implements UserInterface, \Serializable
         return $this;
     }
 
-    /**
-     * Returns the roles granted to the user.
-     *
-     * <code>
-     * public function getRoles()
-     * {
-     *     return array('ROLE_USER');
-     * }
-     * </code>
-     *
-     * Alternatively, the roles might be stored on a ``roles`` property,
-     * and populated in any number of different ways when the user object
-     * is created.
-     *
-     * @return (Role|string)[] The user roles
-     */
     public function getRoles()
     {
         return $this->roles;
@@ -104,7 +85,7 @@ class User implements UserInterface, \Serializable
      */
     public function getSalt()
     {
-        // yml bcrypt
+        // yml bcrypt salt wasted, let me use argon ;) In good env you can use what you want in the same time, in the sa me base
         return null;
     }
 

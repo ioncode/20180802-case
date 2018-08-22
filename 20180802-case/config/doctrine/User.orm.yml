@@ -21,3 +21,5 @@ App\Entity\User:
       length: 255
       column: api_key
       nullable: true
+    roles:
+      type: simple_array
