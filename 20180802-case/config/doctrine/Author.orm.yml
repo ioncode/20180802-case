@@ -3,6 +3,7 @@
 #php bin/console make:entity Author --regenerate
 #add properties to entity before running php bin/console doctrine:migrations:diff
 #generate migration by php bin/console doctrine:migrations:migrate
+#after success look at https://symfony.com/blog/new-and-improved-generators-for-makerbundle
 App\Entity\Author:
   type: entity
   id:

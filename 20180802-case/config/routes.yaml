@@ -22,3 +22,9 @@ logout:
 user_delete:
   path: /user/delete
   controller: App\Controller\UserController::delete
+
+authors:
+  path: /authors
+  controller: App\Controller\AuthorController::index
+
+#  @TODO add all other routes for CRUD operations under Author's entities, from annotations in  AuthorController

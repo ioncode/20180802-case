@@ -37,7 +37,7 @@ class UserLoginNamePasswordForm extends AbstractFormLoginAuthenticator
 //        dump(['method'=>__METHOD__, 'POST'=>$request->isMethod('POST'), 'logged_in_security_user'=>$this->security->getUser()]);
 
 //        let's guard only POST requests, because we want to guard FORMS submissions
-        if ($request->isMethod('POST') && $request->attributes->get('_route') !== 'register') {
+        if ($request->isMethod('POST') && $request->attributes->get('_route') === 'login') {
             return true;
 
 
@@ -66,6 +66,11 @@ class UserLoginNamePasswordForm extends AbstractFormLoginAuthenticator
 //        0) handle CSRF token in POST request
 
         $csrfToken = $request->request->get('_csrf_token');
+
+
+
+
+
 //        dump(['checking credentials and return them or exception', $csrfToken, $request->request->get('_name')]);
         if (false === $this->csrfTokenManager->isTokenValid(new CsrfToken('authenticate', $csrfToken))) {
             throw new InvalidCsrfTokenException('Invalid CSRF token.');
