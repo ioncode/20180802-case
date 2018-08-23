@@ -74,5 +74,6 @@ security:
         #- { path: ^/registeruser, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/profile, roles: ROLE_USER }
         - { path: ^/api, roles: ROLE_USER }
+        - { path: ^/author, roles: ROLE_USER }
 
 
