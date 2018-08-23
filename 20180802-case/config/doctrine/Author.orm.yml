@@ -1,0 +1,23 @@
+#see docs at https://www.doctrine-project.org/projects/doctrine-orm/en/2.6/reference/basic-mapping.html for more details
+#remember, since doctrine 3.0 you can't generate Entity methods https://github.com/doctrine/DoctrineBundle/issues/739
+#php bin/console make:entity Author --regenerate
+#add properties to entity before running php bin/console doctrine:migrations:diff
+#generate migration by php bin/console doctrine:migrations:migrate
+App\Entity\Author:
+  type: entity
+  id:
+    id:
+      type: integer
+      generator:
+        strategy: AUTO
+  fields:
+    name:
+      type: string
+      nullable: false
+      unique: true
+    dob:
+      type: date
+      nullable: true
+    gender:
+#      instead unsupported base type ENUM
+      type: boolean
