@@ -3,7 +3,7 @@
 {% block title %}Author index{% endblock %}
 
 {% block body %}
-    <h1>Author index</h1>
+    <h1>Authors</h1>
 
     <table class="table">
         <thead>
@@ -11,7 +11,7 @@
                 <th>Id</th>
                 <th>Name</th>
                 <th>Dob</th>
-                <th>Gender</th>
+                <th>Man</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -22,10 +22,11 @@
                 <td>{{ author.name }}</td>
                 <td>{{ author.dob ? author.dob|date('Y-m-d') : '' }}</td>
                 <td>{{ author.gender ? 'Yes' : 'No' }}</td>
-                {#<td>#}
-                    {#<a href="{{ path('author_show', {'id': author.id}) }}">show</a>#}
-                    {#<a href="{{ path('author_edit', {'id': author.id}) }}">edit</a>#}
-                {#</td>#}
+                <td>
+                    <a href="{{ path('author_show', {'id': author.id}) }}">show</a>
+                    <a href="{{ path('author_edit', {'id': author.id}) }}">edit</a>
+                    {#{{ include('author/_delete_form.html.twig') }}#}
+                </td>
             </tr>
         {% else %}
             <tr>
@@ -35,5 +36,67 @@
         </tbody>
     </table>
 
-    {#<a href="{{ path('author_new') }}">Create new</a>#}
+    {#add paginator example and move it to custom block or widget in future #}
+    {% if ion_pager.total_count > ion_pager.per_page %}
+    <nav aria-label="author list navigation">
+        <ul class="pagination justify-content-center">
+
+            {% if  ion_pager.rendered_page_index > 1%}
+                <li class="page-item">
+                    <a class="page-link" href="/authors/{{ion_pager.rendered_page_index -1}}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                    </li>
+                {% endif %}
+
+
+            {#render previous li, if current > 1#}
+            {% if  ion_pager.rendered_page_index > 1%}
+                <li class="page-item"><a class="page-link" href="/authors/{{ion_pager.rendered_page_index -1}}">{{ion_pager.rendered_page_index -1}}</a></li>
+            {% endif %}
+            <li class="page-item active"><a class="page-link" href="/authors/{{ion_pager.rendered_page_index}}">{{ion_pager.rendered_page_index}}</a></li>
+
+            {% if ion_pager.rendered_page_index*ion_pager.per_page < ion_pager.total_count %}
+                <li class="page-item"><a class="page-link" href="/authors/{{ion_pager.rendered_page_index +1}}">{{ion_pager.rendered_page_index +1}}</a></li>
+            {% endif %}
+            {% if  ion_pager.rendered_page_index == 1 %}
+                <li class="page-item"><a class="page-link" href="/authors/{{ion_pager.rendered_page_index +2}}">{{ion_pager.rendered_page_index +2}}</a></li>
+            {% endif %}
+
+
+            {% if ion_pager.rendered_page_index*ion_pager.per_page < ion_pager.total_count %}
+
+                <li class="page-item">
+                    {#<a class="page-link" href="#">Next</a>#}
+                    <a class="page-link" href="/authors/{{ion_pager.rendered_page_index +1}}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    {#<a class="page-link" href="#">Next</a>#}
+                    <a class="page-link" href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+    {% if authors %}
+        <div class="alert alert-primary" role="alert">
+            Listed {{authors|length}} authors from {{ ion_pager.total_count }}
+        </div>
+    {% endif %}
+    <a class="btn btn-primary" role="button" href="{{ path('author_new') }}">Add new author</a>
 {% endblock %}

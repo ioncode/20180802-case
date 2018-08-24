@@ -24,7 +24,31 @@ user_delete:
   controller: App\Controller\UserController::delete
 
 authors:
-  path: /authors
+#  some magic for security and prevention too long lists, see http://symfony.com/doc/current/routing.html#giving-placeholders-a-default-value
+  path: /authors/{page}
   controller: App\Controller\AuthorController::index
+  methods:    [GET, HEAD]
+  defaults:
+    page: 1
+  requirements:
+    page: '\d+'
 
-#  @TODO add all other routes for CRUD operations under Author's entities, from annotations in  AuthorController
+#  %TODO nested & parametrized route's names, is it possible ?
+
+author_new:
+  path: /author/new
+  controller: App\Controller\AuthorController::new
+
+author_show:
+  path: /author/show/{id<\d+>}
+  controller: App\Controller\AuthorController::show
+  methods:    [GET, HEAD]
+
+author_edit:
+  path: /author/edit/{id<\d+>}
+  controller: App\Controller\AuthorController::edit
+
+author_delete:
+  path: /author/delete/{id<\d+>}
+  controller: App\Controller\AuthorController::delete
+  methods:    [DELETE]

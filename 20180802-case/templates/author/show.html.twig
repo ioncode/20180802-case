@@ -20,15 +20,15 @@
                 <td>{{ author.dob ? author.dob|date('Y-m-d') : '' }}</td>
             </tr>
             <tr>
-                <th>Gender</th>
+                <th>Man</th>
                 <td>{{ author.gender ? 'Yes' : 'No' }}</td>
             </tr>
         </tbody>
     </table>
 
-    <a href="{{ path('author_index') }}">back to list</a>
+    <a href="{{ path('authors') }}">back to list</a>
 
-    <a href="{{ path('author_edit', {'id': author.id}) }}">edit</a>
+    {#<a href="{{ path('author_edit', {'id': author.id}) }}">edit</a>#}
 
     {{ include('author/_delete_form.html.twig') }}
 {% endblock %}
