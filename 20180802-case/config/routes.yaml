@@ -25,13 +25,17 @@ user_delete:
 
 authors:
 #  some magic for security and prevention too long lists, see http://symfony.com/doc/current/routing.html#giving-placeholders-a-default-value
-  path: /authors/{page}
+  path: /authors/{page}/{filter}
   controller: App\Controller\AuthorController::index
   methods:    [GET, HEAD]
   defaults:
     page: 1
+#    null filter by default, for more complex conditions, please, laak at http://symfony.com/doc/current/routing/conditions.html
+    filter: null
   requirements:
     page: '\d+'
+#    @TODO route matched only for requests with filter, longer than X chars, excluding newlines and other buggy chars
+#    filter:
 
 #  %TODO nested & parametrized route's names, is it possible ?
 

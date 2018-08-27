@@ -17,7 +17,10 @@ this app developed in Windows X64 env, using PHP 7.2.8 X64 stable build & Mysql 
 
 #Separated ORM configuration
 
- [../config/doctrine/](https://github.com/ioncode/20180802-case/tree/master/20180802-case/config/doctrine) folder contains models against Symfony's default Annotation syntax  
+  - [../config/doctrine/](https://github.com/ioncode/20180802-case/tree/master/20180802-case/config/doctrine) folder contains models against Symfony's default Annotation syntax
+  - Entity list filters, based on 'LIKE' queries
+![demo filter](https://gyazo.com/f7758947f48a833603010f038adcb2fe)
+[Author's list, based on 'bob' query](https://gyazo.com/bdbab15010c233da6c74799b5f9a8f4c)   
 
 # Security 
 

@@ -19,55 +19,53 @@ class AuthorController extends Controller
     /**
      * Route("/", name="author_index", methods="GET")
      */
-    public function index($page): Response
+    public function index($page, $filter = null): Response
     {
-//      simple paginator without preload total count and many other stuff
-
-
         //how many authors display per page, you can change it on yor needs
         $paginator=5;
+        //initial offset
+        $offset=0;
+
         $repository=$this->getDoctrine()->getRepository(Author::class);
 
         //many times faster query count without whole data, assuming huge amount
         $count=$repository->count([]);
-
-
         $last_page=(integer)ceil($count/$paginator);
 
 //        dump(['total list length'=>$count, 'possible last page'=> $last_page]);
 
         //process miss formed requests
-
         if ($page>$last_page) {
 //            dump('reset direct (old, wrong, hacked or forced) page arg');
             $page=$last_page;
         }
 
-
         if ($count > $paginator) {
-
             $offset=($page-1)*$paginator;
-
 //            dump("Enabling pagination for page $page with offset $offset ");
-
-
-            //findAll changed to limited query https://www.doctrine-project.org/api/orm/2.6/Doctrine/ORM/EntityRepository.html
-
-            //dump($offset);
-            $authors = $repository->findBy([], null, $paginator, $offset);
-
-
         }
 
-
+//      process filterByName from doctrine repo (more complex filters suggested via model repo, see more at https://knpuniversity.com/screencast/symfony-rest3/filtering )
+//      dump($filter);
+        if ($filter) {
+//            $authors = $repository->findBy(['name'=>$filter], null, $paginator, $offset);
+//            try find 'bob' in "this is bob's name" ;), see example here https://gyazo.com/bdbab15010c233da6c74799b5f9a8f4c
+//            dump([$authors, $repository->findOneBy(['name'=>$filter]), $repository->createQueryBuilder('author')
+//                ->where('author.name LIKE :name')
+//                ->setParameter('name', '%'.$filter.'%')
+//                ->getQuery()
+//                ->execute()
+//            ]);
+            $authors=$repository->createQueryBuilder('author')
+                ->where('author.name LIKE :name')
+                ->setParameter('name', '%'.$filter.'%')
+                ->getQuery()
+                ->execute();
+            $count=count($authors);
+        }
         else {
-
-            $authors = $repository->findAll();
-
-
-
-
-
+//          findAll changed to limited query https://www.doctrine-project.org/api/orm/2.6/Doctrine/ORM/EntityRepository.html
+            $authors = $repository->findBy([], null, $paginator, $offset);
         }
 
 //        dump(['method'=>__CLASS__, 'page'=>$page, 'displayed list length'=>count($authors)]);
@@ -77,7 +75,8 @@ class AuthorController extends Controller
                 'per_page'=>$paginator,
                 'total_count'=>$count,
                 'rendered_page_index'=>$page
-            ]
+            ],
+            'filter' => $filter
         ]);
     }
 
