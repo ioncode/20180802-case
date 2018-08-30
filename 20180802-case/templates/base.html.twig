@@ -49,6 +49,22 @@
                     </li>
                  </ul>
                 {#//logged in user dropdown menu#}
+
+                {#tricky filter definition statement #}
+                {% if  filter is defined %}
+
+
+                    {% block filter %}
+
+
+                        {% include 'block/filter.html.twig' %}
+
+                    {% endblock %}
+
+
+
+                {% endif %}
+
                 {% if app.user %}
                     <ul class="navbar-nav">
                         <li class="nav-item dropdown mr-lg-5">
@@ -75,5 +91,8 @@
         {% block javascripts %}
             <script src="{{ asset('build/app.js') }}"></script>
         {% endblock %}
+        {#<pre>#}
+            {#{{ dump(app.request.get('filter'))}}#}
+        {#</pre>#}
     </body>
 </html>

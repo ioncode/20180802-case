@@ -95,7 +95,7 @@
     {% endif %}
     {% if authors %}
         <div class="alert alert-primary" role="alert">
-            Listed {{authors|length}} authors from {{ ion_pager.total_count }}
+                Listed {{authors|length}} authors from {{ ion_pager.total_count }}{% if filter %}, filtered by "{{ filter }}"{% endif %}
         </div>
     {% endif %}
     <a class="btn btn-primary" role="button" href="{{ path('author_new') }}">Add new author</a>

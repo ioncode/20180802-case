@@ -38,8 +38,9 @@ I think this subject is not covered so good by many other 'scripters', configura
  
 # Bootstrap 4 ready 
 
- - look in [/templates](https://github.com/ioncode/20180802-case/tree/master/20180802-case/templates)
- - if you want to change template, please look at /config/packages/twig.yaml 
+ - twig templates located in [/templates](https://github.com/ioncode/20180802-case/tree/master/20180802-case/templates)
+ - if you want to change Bootstrap 4 template, please look at /config/packages/twig.yaml
+ - Added filter block, template & processing, now you can pass 'filter' to ANY nested template 
  
 
 # Webpack Encore   

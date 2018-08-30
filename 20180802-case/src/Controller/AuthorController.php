@@ -19,7 +19,7 @@ class AuthorController extends Controller
     /**
      * Route("/", name="author_index", methods="GET")
      */
-    public function index($page, $filter = null): Response
+    public function index($page, $filter = null, Request $request): Response
     {
         //how many authors display per page, you can change it on yor needs
         $paginator=5;
@@ -30,6 +30,13 @@ class AuthorController extends Controller
 
         //many times faster query count without whole data, assuming huge amount
         $count=$repository->count([]);
+//            if we have any amount of data in db, we must assume what page must be set or redirected to first
+        if ($page && $count) {
+
+            //dd([$page, $count, $request]);
+
+        }
+
         $last_page=(integer)ceil($count/$paginator);
 
 //        dump(['total list length'=>$count, 'possible last page'=> $last_page]);
