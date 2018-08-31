@@ -56,3 +56,39 @@ author_delete:
   path: /author/delete/{id<\d+>}
   controller: App\Controller\AuthorController::delete
   methods:    [DELETE]
+
+
+#genres
+genres:
+  #  some magic for security and prevention too long lists, see http://symfony.com/doc/current/routing.html#giving-placeholders-a-default-value
+  path: /genres/{page}/{filter}
+  controller: App\Controller\GenreController::index
+  methods:    [GET, HEAD]
+  defaults:
+    page: 1
+    #    null filter by default, for more complex conditions, please, laak at http://symfony.com/doc/current/routing/conditions.html
+    filter: null
+  requirements:
+    page: '\d+'
+#    @TODO route matched only for requests with filter, longer than X chars, excluding newlines and other buggy chars
+#    filter:
+
+#  %TODO nested & parametrized route's names, is it possible ?
+
+genre_new:
+  path: /genre/new
+  controller: App\Controller\GenreController::new
+
+genre_show:
+  path: /genre/show/{id<\d+>}
+  controller: App\Controller\GenreController::show
+  methods:    [GET, HEAD]
+
+genre_edit:
+  path: /genre/edit/{id<\d+>}
+  controller: App\Controller\GenreController::edit
+
+genre_delete:
+  path: /genre/delete/{id<\d+>}
+  controller: App\Controller\GenreController::delete
+  methods:    [DELETE]
