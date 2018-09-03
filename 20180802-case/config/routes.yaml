@@ -1,6 +1,13 @@
 index:
-    path: /
+    path: /{page}/{filter}
     controller: App\Controller\BookController::index
+    methods:    [GET, HEAD]
+    defaults:
+      page: 1
+      #    null filter by default, for more complex conditions, please, laak at http://symfony.com/doc/current/routing/conditions.html
+      filter: null
+    requirements:
+      page: '\d+'
 register:
   path: /registeruser
   controller: App\Controller\UserRegistrationController::register

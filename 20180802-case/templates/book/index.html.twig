@@ -3,17 +3,20 @@
 {% block title %}Book index{% endblock %}
 
 {% block body %}
-    <h1>Book index</h1>
+    <h1>Latest books </h1>
 
     <table class="table">
-        <thead>
+        <thead >
             <tr>
                 <th>Id</th>
                 <th>Title</th>
                 <th>Release_date</th>
                 <th>Catalog_date</th>
                 <th>Rate</th>
+                <th>Genre</th>
+                <th>Author</th>
                 <th>actions</th>
+
             </tr>
         </thead>
         <tbody>
@@ -25,9 +28,16 @@
                 <td>{{ book.catalogDate ? book.catalogDate|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ book.rate }}</td>
                 <td>
+                    <a href="/genre/show/{{ book.genre.id }}">{{ book.genre.name }}</a>
+                </td>
+                <td>
+                    <a href="/author/show/{{ book.author.id }}">{{ book.author.name }}</a>
+                </td>
+                <td>
                     <a href="{{ path('book_show', {'id': book.id}) }}">show</a>
                     <a href="{{ path('book_edit', {'id': book.id}) }}">edit</a>
                 </td>
+
             </tr>
         {% else %}
             <tr>
@@ -36,6 +46,6 @@
         {% endfor %}
         </tbody>
     </table>
-    {#@TODO issue with rendering associated fields demonstrated here https://gyazo.com/6ef7bad1e02d6c6c7c732fa26071a313#}
-    <a class="btn btn-primary disabled" role="button" href="{{ path('book_new') }}">Add a book to catalog</a>
+    <a class="btn btn-primary" role="button" href="{{ path('book_new') }}">Add a book to catalog</a>
+
 {% endblock %}

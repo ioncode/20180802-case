@@ -17,13 +17,62 @@ class BookController extends AbstractController
     /**
      * Route("/", name="book_index", methods="GET")
      */
-    public function index(): Response
+    public function index($page, $filter = null): Response
     {
-        $books = $this->getDoctrine()
-            ->getRepository(Book::class)
-            ->findAll();
 
-        return $this->render('book/index.html.twig', ['books' => $books]);
+
+
+        //how many authors display per page, you can change it on yor needs
+        $paginator=10;
+        //initial offset
+        $offset=0;
+
+        $repository=$this->getDoctrine()->getRepository(Book::class);
+
+        //many times faster query count without whole data, assuming huge amount
+        $count=$repository->count([]);
+        $last_page=(integer)ceil($count/$paginator);
+
+//        dump(['total list length'=>$count, 'possible last page'=> $last_page]);
+
+        //process miss formed requests
+        if ($page>$last_page) {
+//            dump('reset direct (old, wrong, hacked or forced) page arg');
+            $page=$last_page;
+        }
+
+        if ($count > $paginator) {
+            $offset=($page-1)*$paginator;
+//            dump("Enabling pagination for page $page with offset $offset ");
+        }
+
+//      process filterByName from doctrine repo (more complex filters suggested via model repo, see more at https://knpuniversity.com/screencast/symfony-rest3/filtering )
+//      dump($filter);
+        if ($filter) {
+            $books=$repository->createQueryBuilder('book')
+                ->where('book.title LIKE :name')
+                ->setParameter('name', '%'.$filter.'%')
+                ->orderBy('book.catalog_date', 'DESC')
+                ->getQuery()
+                ->execute();
+            $count=count($books);
+        }
+        else {
+//          findAll changed to limited query https://www.doctrine-project.org/api/orm/2.6/Doctrine/ORM/EntityRepository.html
+            $books = $repository->findBy([], ['catalog_date'=>'desc'], $paginator, $offset);
+        }
+
+//        dump(['method'=>__CLASS__, 'page'=>$page, 'displayed list length'=>count($genres)]);
+        return $this->render('book/index.html.twig', [
+            'books' => $books,
+            'ion_pager'=>[
+                'per_page'=>$paginator,
+                'total_count'=>$count,
+                'rendered_page_index'=>$page
+            ],
+            'filter' => $filter
+        ]);
+
     }
 
     /**
@@ -40,7 +89,7 @@ class BookController extends AbstractController
             $em->persist($book);
             $em->flush();
 
-            return $this->redirectToRoute('book_index');
+            return $this->redirectToRoute('books');
         }
 
         return $this->render('book/new.html.twig', [
@@ -52,16 +101,19 @@ class BookController extends AbstractController
     /**
      * Route("/{id}", name="book_show", methods="GET")
      */
-    public function show(Book $book): Response
+    public function show(Book $book, $id): Response
     {
+        $book=$this->getDoctrine()->getRepository(Book::class)->findOneBy(['id'=>$id]);
+//        dump($book);
         return $this->render('book/show.html.twig', ['book' => $book]);
     }
 
     /**
      * Route("/{id}/edit", name="book_edit", methods="GET|POST")
      */
-    public function edit(Request $request, Book $book): Response
+    public function edit(Request $request, Book $book, $id): Response
     {
+        $book=$this->getDoctrine()->getRepository(Book::class)->findOneBy(['id'=>$id]);
         $form = $this->createForm(BookType::class, $book);
         $form->handleRequest($request);
 

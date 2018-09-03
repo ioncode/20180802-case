@@ -11,16 +11,21 @@ App\Entity\Book:
       nullable: false
       unique: true
     release_date:
+#      @TODO implement before death dates
       type: date
       nullable: true
     catalog_date:
       type: datetime
-      columnDefinition: TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
+#      deprecated feature on doctrine level , see more here https://github.com/doctrine/doctrine2/issues/6346
+      columnDefinition: TIMESTAMP DEFAULT CURRENT_TIMESTAMP NULL
       options:
         default: CURRENT_TIMESTAMP
     rate:
       type: float
       length: 10
+#  https://symfony.com/doc/current/doctrine/lifecycle_callbacks.html
+  lifecycleCallbacks:
+    prePersist: [setCatalogDateValue]
   manyToOne:
 #    https://symfony.com/doc/current/doctrine/associations.html
     genre:

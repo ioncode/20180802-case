@@ -115,4 +115,9 @@ class Book
     {
         $this->author = $author;
     }
+
+    public function setCatalogDateValue()
+    {
+        $this->catalog_date = new \DateTime("now");
+    }
 }
