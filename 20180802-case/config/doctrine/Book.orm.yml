@@ -1,0 +1,33 @@
+App\Entity\Book:
+  type: entity
+  id:
+    id:
+      type: integer
+      generator:
+        strategy: AUTO
+  fields:
+    title:
+      type: string
+      nullable: false
+      unique: true
+    release_date:
+      type: date
+      nullable: true
+    catalog_date:
+      type: datetime
+      columnDefinition: TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
+      options:
+        default: CURRENT_TIMESTAMP
+    rate:
+      type: float
+      length: 10
+  manyToOne:
+#    https://symfony.com/doc/current/doctrine/associations.html
+    genre:
+      targetEntity: App\Entity\Genre
+      joinColumn:
+        nullable: false
+    author:
+      targetEntity: App\Entity\Author
+      joinColumn:
+        nullable: false

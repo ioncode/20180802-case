@@ -1,6 +1,6 @@
-#index:
-#    path: /
-#    controller: App\Controller\DefaultController::index
+index:
+    path: /
+    controller: App\Controller\BookController::index
 register:
   path: /registeruser
   controller: App\Controller\UserRegistrationController::register
@@ -91,4 +91,40 @@ genre_edit:
 genre_delete:
   path: /genre/delete/{id<\d+>}
   controller: App\Controller\GenreController::delete
+  methods:    [DELETE]
+
+
+#books
+books:
+  #  some magic for security and prevention too long lists, see http://symfony.com/doc/current/routing.html#giving-placeholders-a-default-value
+  path: /books/{page}/{filter}
+  controller: App\Controller\BookController::index
+  methods:    [GET, HEAD]
+  defaults:
+    page: 1
+    #    null filter by default, for more complex conditions, please, laak at http://symfony.com/doc/current/routing/conditions.html
+    filter: null
+  requirements:
+    page: '\d+'
+#    @TODO route matched only for requests with filter, longer than X chars, excluding newlines and other buggy chars
+#    filter:
+
+#  %TODO nested & parametrized route's names, is it possible ?
+
+book_new:
+  path: /book/new
+  controller: App\Controller\BookController::new
+
+book_show:
+  path: /book/show/{id<\d+>}
+  controller: App\Controller\BookController::show
+  methods:    [GET, HEAD]
+
+book_edit:
+  path: /book/edit/{id<\d+>}
+  controller: App\Controller\BookController::edit
+
+book_delete:
+  path: /book/delete/{id<\d+>}
+  controller: App\Controller\BookController::delete
   methods:    [DELETE]

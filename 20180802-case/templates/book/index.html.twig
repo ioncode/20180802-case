@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Book index{% endblock %}
+
+{% block body %}
+    <h1>Book index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Release_date</th>
+                <th>Catalog_date</th>
+                <th>Rate</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for book in books %}
+            <tr>
+                <td>{{ book.id }}</td>
+                <td>{{ book.title }}</td>
+                <td>{{ book.releaseDate ? book.releaseDate|date('Y-m-d') : '' }}</td>
+                <td>{{ book.catalogDate ? book.catalogDate|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ book.rate }}</td>
+                <td>
+                    <a href="{{ path('book_show', {'id': book.id}) }}">show</a>
+                    <a href="{{ path('book_edit', {'id': book.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {#@TODO issue with rendering associated fields demonstrated here https://gyazo.com/6ef7bad1e02d6c6c7c732fa26071a313#}
+    <a class="btn btn-primary disabled" role="button" href="{{ path('book_new') }}">Add a book to catalog</a>
+{% endblock %}
