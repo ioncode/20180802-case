@@ -58,7 +58,7 @@ class GenreController extends AbstractController
             $genres = $repository->findBy([], null, $paginator, $offset);
         }
 
-//        dump(['method'=>__CLASS__, 'page'=>$page, 'displayed list length'=>count($genres)]);
+//        dump(['method'=>__CLASS__, 'page'=>$page, 'displayed list length'=>count($genres), 'genres'=>$genres]);
         return $this->render('genre/index.html.twig', [
             'genres' => $genres,
             'ion_pager'=>[
@@ -99,7 +99,13 @@ class GenreController extends AbstractController
     public function show($id): Response
     {
         $genre=$this->getDoctrine()->getRepository(Genre::class)->findOneBy(['id'=>$id]);
-        return $this->render('genre/show.html.twig', ['genre' => $genre]);
+        $books=null;
+        if (count($genre->getBooks())){
+            $books=$genre->getBooks()->getSnapshot();
+
+        }
+//        dump([__METHOD__, $genre, count($genre->getBooks()), $books]);
+        return $this->render('genre/show.html.twig', ['genre' => $genre, 'books'=>$books]);
     }
 
     /**

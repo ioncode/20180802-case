@@ -10,3 +10,7 @@ App\Entity\Genre:
       type: string
       nullable: false
       unique: true
+  oneToMany:
+    books:
+      targetEntity: App\Entity\Book
+      mappedBy: genre

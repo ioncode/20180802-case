@@ -30,6 +30,7 @@ App\Entity\Book:
 #    https://symfony.com/doc/current/doctrine/associations.html
     genre:
       targetEntity: App\Entity\Genre
+      inversedBy: books
       joinColumn:
         nullable: false
     author:
